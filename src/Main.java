@@ -1,9 +1,6 @@
 import prod.Categoria;
 import prod.Producto;
-import usr.AdministradorContenido;
-import usr.AdministradorUsuario;
-import usr.Duena;
-import usr.Usuario;
+import usr.*;
 
 import javax.swing.*;
 import java.util.HashMap;
@@ -16,7 +13,11 @@ public class Main {
 
 
         Duena Cabra = new Duena("baaa","Cabrita Sakura", "jhadfvasdeofjhojh", "Presidente", "01/01/25","Activa","AAAAAAAAAAAAAAAAAA","01/01/25");
+        Cliente test_cliente= new Cliente("test_c","Cliente","test", "0","activa");
+        AdministradorContenido test_contenido= new AdministradorContenido("test_cont","Cont","test","AdminContenido","0","Activa",true,true,true,true,true,true);
         usuarios.put("Cabrita Sakura",Cabra);
+        usuarios.put("Cont",test_contenido);
+        usuarios.put("Cliente",test_cliente);
 //    electorBase();
         testmenu();
     }
@@ -102,7 +103,9 @@ public class Main {
                 if (opt == 0) {
 
                 } else if (opt == 1) {
+                    if (u.getPermisosDeEdicion().contains("categoria")){
 
+                    }
                 }
                 accionAdminContenido(u);
                 break;
@@ -116,10 +119,22 @@ public class Main {
                     String categoria_producto;
                     double precio_producto;
                     int stock_producto;
+                    String fecha_producto;
                     id_producto = JOptionPane.showInputDialog(null, "Id");
                     nombre_producto = JOptionPane.showInputDialog(null, "Nombre");
                     categoria_producto = JOptionPane.showInputDialog(null, "Categoria").toLowerCase();
+                    if (!categorias.containsKey(categoria_producto))
+                    {
+                        JOptionPane.showMessageDialog(null, "Categoria inexistente");
+                        accionAdminContenido(u);
+                        break;
+                    }
                     precio_producto = Double.parseDouble(JOptionPane.showInputDialog(null, "Precio"));
+                    stock_producto = Integer.parseInt(JOptionPane.showInputDialog(null, "Stock"));
+                    fecha_producto = JOptionPane.showInputDialog(null, "Fecha");
+                    productos.put(nombre_producto,new Producto(id_producto,nombre_producto,categorias.get(categoria_producto),precio_producto,stock_producto,fecha_producto));
+
+
                 } else if (opt == 1) {
                     String id_categoria;
                     String nombre_categoria;
@@ -138,6 +153,30 @@ public class Main {
                 accionAdminContenido(u);
                 break;
             }
+            case "eliminar":{
+                opt = JOptionPane.showOptionDialog(null, "Que desea eliminar?", "Eliminar", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, opciones, opciones[2]);
+                if (opt==0){
+                    String nombre_producto= JOptionPane.showInputDialog(null, "Nombre del producto a eliminar");
+                    if (productos.containsKey(nombre_producto)){
+                        productos.remove(nombre_producto);
+                    }
+                    else{
+                        JOptionPane.showMessageDialog(null, "Producto inexistente");
+                    }
+                } else if (opt==1) {
+                    String nombre_categoria= JOptionPane.showInputDialog(null, "Nombre del producto a eliminar");
+                    if(categorias.containsKey(nombre_categoria)){
+                        categorias.remove(nombre_categoria);
+                    }
+                    else {
+                        JOptionPane.showMessageDialog(null, "Categoria inexistente");
+
+                    }
+
+                }
+                accionAdminContenido(u);
+                break;
+            }
             case "salir": {
                 break;
             }
@@ -149,7 +188,7 @@ public class Main {
     }
 
         public static void registar () {
-            Object[] opciones = {"usr.Cliente", "AdminUsuario", "AdminContenido"};
+            Object[] opciones = {"Cliente", "AdminUsuario", "AdminContenido"};
             int tipo;
             String id;
             String nombre;
@@ -163,15 +202,16 @@ public class Main {
             pass = JOptionPane.showInputDialog(null, "Contrasena");
             fecha = JOptionPane.showInputDialog(null, "Fecha de registro(automatica en el futuro)");
             estado = JOptionPane.showInputDialog(null, "Estado");
-            rol = JOptionPane.showInputDialog(null, "Rol");
             if (tipo == 0) {
-                System.out.println("Creacion cliente");
+                usuarios.put(nombre, new Cliente(id,nombre,pass,fecha,estado));
 
             } else if (tipo == 1) {
+                rol = JOptionPane.showInputDialog(null, "Rol");
                 int nivel = Integer.parseInt(JOptionPane.showInputDialog(null, "Nivel de acceso"));
                 usuarios.put(nombre, new AdministradorUsuario(id, nombre, pass, rol, fecha, estado, nivel));
 
             } else if (tipo == 2) {
+                rol = JOptionPane.showInputDialog(null, "Rol");
                 AdministradorContenido obj_cont = new AdministradorContenido(id, nombre, pass, rol, fecha, estado,
                         JOptionPane.showConfirmDialog(null, "Tiene este usuario permiso para editar nombres?", "Permisos", JOptionPane.YES_NO_OPTION) == 1,
                         JOptionPane.showConfirmDialog(null, "Tiene este usuario permiso para editar categorias?", "Permisos", JOptionPane.YES_NO_OPTION) == 1,
@@ -210,6 +250,24 @@ public class Main {
                     testmenu();
                     break;
                 }
+            }
+        }
+        public static boolean contieneUsuario(String nombre){
+        boolean val=false;
+        usuarios.forEach((n)->{if (usuarios.get(n).getNombre()==nombre){return true;}});
+        return val;
+        }
+        public static void editarCategoria(Categoria c){
+            String inp;
+            inp = JOptionPane.showInputDialog(null, "Cual campo va a editar? (id, nombre, descripcion, salir").toLowerCase();
+            String val;
+            switch (inp){
+                case "id":
+                {
+                    val=JOptionPane.showInputDialog(null,"id");
+                    categorias.replace();
+                }
+
             }
         }
     }

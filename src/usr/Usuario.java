@@ -21,6 +21,10 @@ public abstract class Usuario {
         this.obj_carrito = new Carrito();
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
     public String getEstadoCuenta() {
         return estadoCuenta;
     }
