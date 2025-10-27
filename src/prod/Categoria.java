@@ -1,6 +1,6 @@
 package prod;
 
-public class Categoria {
+public class   Categoria {
     private String id;
     private String nombre;
     private String descripcion;

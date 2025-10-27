@@ -9,6 +9,15 @@ public class Producto {
     int stock;
     String fechaLanzamiento;
 
+    public Producto(String id, String nombre, Categoria categoria, double precio, int stock, String fechaLanzamiento) {
+        this.id = id;
+        this.nombre = nombre;
+        this.categoria = categoria;
+        this.precio = precio;
+        this.stock = stock;
+        this.fechaLanzamiento = fechaLanzamiento;
+    }
+
     public String getId() {
         return id;
     }

@@ -1,5 +1,7 @@
 package usr;
 
+import prod.Carrito;
+
 public abstract class Usuario {
     private String id;
     private String nombre;
@@ -7,6 +9,7 @@ public abstract class Usuario {
     private String rol;
     private String fechaRegistro;
     private String estadoCuenta;
+    private Carrito obj_carrito;
 
     public Usuario(String id, String nombre, String passwordHash, String rol, String fechaRegistro, String estadoCuenta) {
         this.id = id;
@@ -15,6 +18,7 @@ public abstract class Usuario {
         this.rol = rol;
         this.fechaRegistro = fechaRegistro;
         this.estadoCuenta = estadoCuenta;
+        this.obj_carrito = new Carrito();
     }
 
     public String getEstadoCuenta() {
